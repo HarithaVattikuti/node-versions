@@ -6,7 +6,7 @@ on:
 
 jobs:
   get-new-node-versions:
-    uses: HarithaVattikuti/versions-package-tools/.github/workflows/get-new-tool-versions.yml@testnewversion
+    uses: HarithaVattikuti/versions-package-tools/.github/workflows/get-new-tool-versions.yml@main
     with:
       tool-name: "Node"
       image-url: "https://nodejs.org/static/images/logo-hexagon-card.png"
