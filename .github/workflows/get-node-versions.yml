@@ -1,12 +1,12 @@
 name: Get Node versions
 on:
-  schedule:
-    - cron: '0 3,15 * * *'
+  #schedule:
+   # - cron: '0 3,15 * * *'
   workflow_dispatch:
 
 jobs:
   get-new-node-versions:
-    uses: actions/versions-package-tools/.github/workflows/get-new-tool-versions.yml@main
+    uses: HarithaVattikuti/versions-package-tools/.github/workflows/get-new-tool-versions.yml@testnewversion
     with:
       tool-name: "Node"
       image-url: "https://nodejs.org/static/images/logo-hexagon-card.png"
