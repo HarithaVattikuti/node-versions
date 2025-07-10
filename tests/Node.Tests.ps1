@@ -10,8 +10,8 @@ Describe "Node.js" {
             $homeDir = $env:HOME ?? $env:HOMEDRIVE
             #$logsFolderPath = Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages" -Resolve
             $possiblePaths = @(
-                Join-Path -Path $homeDir -ChildPath "actions-runner/cached/_diag/pages"
-                Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages"
+                Join-Path -Path $homeDir -ChildPath "actions-runner/cached/_diag/pages" -Resolve
+                Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages" -Resolve
             )
             
             $logsFolderPath = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
