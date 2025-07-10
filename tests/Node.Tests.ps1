@@ -18,29 +18,39 @@ Describe "Node.js" {
 
             Write-Host "Logs folder path: $logsFolderPath"
     
-            if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
-                $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
-                    if (-not $_.PSIsContainer) { # Ensure it's not a directory
-                        $logContent = Get-Content $_.Fullname -Raw
-                        Write-Host "Checking file: $($_.FullName)"
-                        return $logContent -match "setup-node@v"
-                    }
-                } | Select-Object -First 1                                    
-            } else {
-                $useNodeLogFile = Get-ChildItem -Path $logsFolderPath | Where-Object {
-                    if (-not $_.PSIsContainer) { # Ensure it's not a directory
-                        $logContent = Get-Content $_.Fullname -Raw
-                        Write-Host "Checking file: $($_.FullName)"
-                        return $logContent -match "setup-node@v"
-                    }
-                } | Select-Object -First 1                
-            }
+            if (-not [string]::IsNullOrEmpty($logsFolderPath) -and (Test-Path $logsFolderPath)) {
+                if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
+                    $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
+                        if (-not $_.PSIsContainer) { # Ensure it's not a directory
+                            $logContent = Get-Content $_.Fullname -Raw
+                            Write-Host "Checking file: $($_.FullName)"
+                            return $logContent -match "setup-node@v"
+                        }
+                    } | Select-Object -First 1                                    
+                } else {
+                    $useNodeLogFile = Get-ChildItem -Path $logsFolderPath | Where-Object {
+                        if (-not $_.PSIsContainer) { # Ensure it's not a directory
+                            $logContent = Get-Content $_.Fullname -Raw
+                            Write-Host "Checking file: $($_.FullName)"
+                            return $logContent -match "setup-node@v"
+                        }
+                    } | Select-Object -First 1                
+                }
 
             # $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
             #     $logContent = Get-Content $_.Fullname -Raw
             #     return $logContent -match "setup-node@v"
             # } | Select-Object -First 1
-            return $useNodeLogFile.Fullname
+            #return $useNodeLogFile.Fullname
+              # Return the file name if a match is found
+                if ($useNodeLogFile) {
+                    return $useNodeLogFile.FullName
+                } else {
+                    Write-Error "No matching log file found in the specified path."
+                }
+            } else {
+                Write-Error "The provided logs folder path is null, empty, or does not exist: $logsFolderPath"
+            }
         }
     }
     
