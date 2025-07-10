@@ -21,11 +21,15 @@ Describe "Node.js" {
             Write-Host "Resolved path: $resolvedPath"
     
             if (-not [string]::IsNullOrEmpty($resolvedPath) -and (Test-Path $resolvedPath)) {
-                if ($logsFolderPath -eq "runners/*/_diag/pages") {
+                Write-Host "Inside if block for checking path existence"
+
+                if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
                     try {
+                        Write-Host "Inside try block for resolving path"
+
                         # $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
                         # Write-Host "Resolved path: $resolvedPath"
-                        $useNodeLogFile = Get-ChildItem -Path $resolvedPath | Where-Object {
+                        $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File| Where-Object {
                             if (-not $_.PSIsContainer) { # Ensure it's not a directory
                                 $logContent = Get-Content $_.Fullname -Raw
                                 Write-Host "Checking file: $($_.FullName)"
@@ -36,7 +40,7 @@ Describe "Node.js" {
                         Write-Error "Failed to resolve path: $logsFolderPath"
                     }
                 } else {
-                    $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File| Where-Object {
+                    $useNodeLogFile = Get-ChildItem -Path $resolvedPath | Where-Object {
                         if (-not $_.PSIsContainer) { # Ensure it's not a directory
                             $logContent = Get-Content $_.Fullname -Raw
                             Write-Host "Checking file: $($_.FullName)"
