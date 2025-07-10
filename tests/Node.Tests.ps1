@@ -19,7 +19,7 @@ Describe "Node.js" {
             Write-Host "Logs folder path: $logsFolderPath"
     
             if (-not [string]::IsNullOrEmpty($logsFolderPath) -and (Test-Path $logsFolderPath)) {
-                if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
+                #if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
                     $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
                         if (-not $_.PSIsContainer) { # Ensure it's not a directory
                             $logContent = Get-Content $_.Fullname -Raw
@@ -27,15 +27,15 @@ Describe "Node.js" {
                             return $logContent -match "setup-node@v"
                         }
                     } | Select-Object -First 1                                    
-                } else {
-                    $useNodeLogFile = Get-ChildItem -Path $logsFolderPath | Where-Object {
-                        if (-not $_.PSIsContainer) { # Ensure it's not a directory
-                            $logContent = Get-Content $_.Fullname -Raw
-                            Write-Host "Checking file: $($_.FullName)"
-                            return $logContent -match "setup-node@v"
-                        }
-                    } | Select-Object -First 1                
-                }
+                # } else {
+                #     $useNodeLogFile = Get-ChildItem -Path $logsFolderPath | Where-Object {
+                #         if (-not $_.PSIsContainer) { # Ensure it's not a directory
+                #             $logContent = Get-Content $_.Fullname -Raw
+                #             Write-Host "Checking file: $($_.FullName)"
+                #             return $logContent -match "setup-node@v"
+                #         }
+                #     } | Select-Object -First 1                
+                # }
 
             # $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
             #     $logContent = Get-Content $_.Fullname -Raw
