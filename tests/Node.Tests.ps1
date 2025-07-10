@@ -10,19 +10,22 @@ Describe "Node.js" {
             $homeDir = $env:HOME ?? $env:HOMEDRIVE
             #$logsFolderPath = Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages" -Resolve
             $possiblePaths = @(
-                Join-Path -Path $homeDir -ChildPath "actions-runner/cached/_diag/pages" -Resolve
-                Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages" -Resolve
+                Join-Path -Path $homeDir -ChildPath "actions-runner/cached/_diag/pages"
+                Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages"
             )
             
             $logsFolderPath = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
+            $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
+
 
             Write-Host "Logs folder path: $logsFolderPath"
+            Write-Host "Resolved path: $resolvedPath"
     
-            if (-not [string]::IsNullOrEmpty($logsFolderPath) -and (Test-Path $logsFolderPath)) {
+            if (-not [string]::IsNullOrEmpty($resolvedPath) -and (Test-Path $resolvedPath)) {
                 if ($logsFolderPath -eq "runners/*/_diag/pages") {
                     try {
-                        $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
-                        Write-Host "Resolved path: $resolvedPath"
+                        # $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
+                        # Write-Host "Resolved path: $resolvedPath"
                         $useNodeLogFile = Get-ChildItem -Path $resolvedPath | Where-Object {
                             if (-not $_.PSIsContainer) { # Ensure it's not a directory
                                 $logContent = Get-Content $_.Fullname -Raw
