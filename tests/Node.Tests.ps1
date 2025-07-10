@@ -20,13 +20,19 @@ Describe "Node.js" {
     
             if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
                 $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
-                    $logContent = Get-Content $_.Fullname -Raw
-                    return $logContent -match "setup-node@v"
+                    if (-not $_.PSIsContainer) { # Ensure it's not a directory
+                        $logContent = Get-Content $_.Fullname -Raw
+                        Write-Host "Checking file: $($_.FullName)"
+                        return $logContent -match "setup-node@v"
+                    }
                 } | Select-Object -First 1                                    
             } else {
                 $useNodeLogFile = Get-ChildItem -Path $logsFolderPath | Where-Object {
-                    $logContent = Get-Content $_.Fullname -Raw
-                    return $logContent -match "setup-node@v"
+                    if (-not $_.PSIsContainer) { # Ensure it's not a directory
+                        $logContent = Get-Content $_.Fullname -Raw
+                        Write-Host "Checking file: $($_.FullName)"
+                        return $logContent -match "setup-node@v"
+                    }
                 } | Select-Object -First 1                
             }
 
