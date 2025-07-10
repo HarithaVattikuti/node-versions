@@ -22,6 +22,7 @@ Describe "Node.js" {
                 if ($logsFolderPath -eq "runners/*/_diag/pages") {
                     try {
                         $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
+                        Write-Host "Resolved path: $resolvedPath"
                         $useNodeLogFile = Get-ChildItem -Path $resolvedPath | Where-Object {
                             if (-not $_.PSIsContainer) { # Ensure it's not a directory
                                 $logContent = Get-Content $_.Fullname -Raw
