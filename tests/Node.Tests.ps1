@@ -20,32 +20,28 @@ Describe "Node.js" {
             Write-Host "Logs folder path: $logsFolderPath"
             Write-Host "Resolved path: $resolvedPath"
     
-            if (-not [string]::IsNullOrEmpty($resolvedPath) -and (Test-Path $resolvedPath)) {
+            if ($resolvedPath -and -not [string]::IsNullOrEmpty($resolvedPath.Path) -and (Test-Path $resolvedPath.Path)) {                
                 Write-Host "Inside if block for checking path existence"
-
-                if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
+                if ($resolvedPath.ProviderPath -like "*actions-runner/cached/_diag/pages") {
+                #if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
                     try {
                         Write-Host "Inside try block for resolving path"
 
                         # $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
                         # Write-Host "Resolved path: $resolvedPath"
                         $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File| Where-Object {
-                            if (-not $_.PSIsContainer) { # Ensure it's not a directory
                                 $logContent = Get-Content $_.Fullname -Raw
                                 Write-Host "Checking file: $($_.FullName)"
                                 return $logContent -match "setup-node@v"
-                            }
                         } | Select-Object -First 1 
                     } catch {
                         Write-Error "Failed to resolve path: $logsFolderPath"
                     }
                 } else {
                     $useNodeLogFile = Get-ChildItem -Path $resolvedPath | Where-Object {
-                        if (-not $_.PSIsContainer) { # Ensure it's not a directory
                             $logContent = Get-Content $_.Fullname -Raw
                             Write-Host "Checking file: $($_.FullName)"
                             return $logContent -match "setup-node@v"
-                        }
                     } | Select-Object -First 1                
                 }
 
