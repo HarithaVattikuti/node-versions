@@ -19,7 +19,9 @@ Describe "Node.js" {
 
             Write-Host "Logs folder path: $logsFolderPath"
             Write-Host "Resolved path: $resolvedPath"
-    
+            Write-Host "Resolved path.path: $resolvedPath.Path"
+            Write-Host "Resolved path.providerPath: $resolvedPath.ProviderPath"
+
             if ($resolvedPath -and -not [string]::IsNullOrEmpty($resolvedPath.Path) -and (Test-Path $resolvedPath.Path)) {                
                 Write-Host "Inside if block for checking path existence"
                 if ($resolvedPath.ProviderPath -like "*actions-runner/cached/_diag/pages") {
