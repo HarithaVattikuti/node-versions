@@ -24,28 +24,28 @@ Describe "Node.js" {
 
             if ($resolvedPath -and -not [string]::IsNullOrEmpty($resolvedPath.Path) -and (Test-Path $resolvedPath.Path)) {                
                 Write-Host "Inside if block for checking path existence"
-                if ($resolvedPath.ProviderPath -like "*actions-runner/cached/_diag/pages") {
-                #if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
-                    try {
-                        Write-Host "Inside try block for resolving path"
+                # if ($resolvedPath.ProviderPath -like "*actions-runner/cached/_diag/pages") {
+                # #if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
+                #     try {
+                #         Write-Host "Inside try block for resolving path"
 
-                        # $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
-                        # Write-Host "Resolved path: $resolvedPath"
-                        $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File| Where-Object {
-                                $logContent = Get-Content $_.Fullname -Raw
-                                Write-Host "Checking file: $($_.FullName)"
-                                return $logContent -match "setup-node@v"
-                        } | Select-Object -First 1 
-                    } catch {
-                        Write-Error "Failed to resolve path: $logsFolderPath"
-                    }
-                } else {
+                #         # $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
+                #         # Write-Host "Resolved path: $resolvedPath"
+                #         $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File| Where-Object {
+                #                 $logContent = Get-Content $_.Fullname -Raw
+                #                 Write-Host "Checking file: $($_.FullName)"
+                #                 return $logContent -match "setup-node@v"
+                #         } | Select-Object -First 1 
+                #     } catch {
+                #         Write-Error "Failed to resolve path: $logsFolderPath"
+                #     }
+                # } else {
                     $useNodeLogFile = Get-ChildItem -Path $resolvedPath | Where-Object {
                             $logContent = Get-Content $_.Fullname -Raw
                             Write-Host "Checking file: $($_.FullName)"
                             return $logContent -match "setup-node@v"
                     } | Select-Object -First 1                
-                }
+                # }
 
             # $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
             #     $logContent = Get-Content $_.Fullname -Raw
