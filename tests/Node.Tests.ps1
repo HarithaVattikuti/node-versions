@@ -10,8 +10,11 @@ Describe "Node.js" {
             $homeDir = $env:HOME ?? $env:HOMEDRIVE
             $logsFolderPath = Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages" -Resolve
     
+            Write-Host "LogsFolderpath: $logsFolderPath"
+
             $useNodeLogFile = Get-ChildItem -Path $logsFolderPath | Where-Object {
                 $logContent = Get-Content $_.Fullname -Raw
+                Write-Host "Checking file: $($_.FullName)"
                 return $logContent -match "setup-node@v"
             } | Select-Object -First 1
             return $useNodeLogFile.Fullname
