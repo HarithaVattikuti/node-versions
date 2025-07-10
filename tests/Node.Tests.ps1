@@ -15,8 +15,7 @@ Describe "Node.js" {
             )
             
             $logsFolderPath = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
-            $resolvedPath = Join-Path -Path $homeDir -ChildPath $logsFolderPath -Resolve
-
+            $resolvedPath = Resolve-Path -Path $logsFolderPath -ErrorAction SilentlyContinue
 
             Write-Host "Logs folder path: $logsFolderPath"
             Write-Host "Resolved path: $resolvedPath"
