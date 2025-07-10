@@ -18,10 +18,22 @@ Describe "Node.js" {
 
             Write-Host "Logs folder path: $logsFolderPath"
     
-            $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
-                $logContent = Get-Content $_.Fullname -Raw
-                return $logContent -match "setup-node@v"
-            } | Select-Object -First 1
+            if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
+                $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
+                    $logContent = Get-Content $_.Fullname -Raw
+                    return $logContent -match "setup-node@v"
+                } | Select-Object -First 1                                    
+            } else {
+                $useNodeLogFile = Get-ChildItem -Path $logsFolderPath | Where-Object {
+                    $logContent = Get-Content $_.Fullname -Raw
+                    return $logContent -match "setup-node@v"
+                } | Select-Object -First 1                
+            }
+
+            # $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
+            #     $logContent = Get-Content $_.Fullname -Raw
+            #     return $logContent -match "setup-node@v"
+            # } | Select-Object -First 1
             return $useNodeLogFile.Fullname
         }
     }
