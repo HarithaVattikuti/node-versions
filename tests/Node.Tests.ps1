@@ -16,6 +16,10 @@ Describe "Node.js" {
             
             $logsFolderPath = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
 
+            Write-Host "HOME: $($env:HOME)"
+            Write-Host "Possible paths:"
+            $possiblePaths | ForEach-Object { Write-Host "  $_" }
+            
             Write-Host "Logs folder path: $logsFolderPath"
     
             if (-not [string]::IsNullOrEmpty($logsFolderPath) -and (Test-Path $logsFolderPath)) {
