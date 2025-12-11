@@ -9,13 +9,15 @@ Describe "Node.js" {
             # GitHub Windows images don't have `HOME` variable
             $homeDir = $env:HOME ?? $env:HOMEDRIVE
             #$logsFolderPath = Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages" -Resolve
+            # Join-Path -Path $homeDir -ChildPath "/_diag/pages"
+                # Join-Path -Path $homeDir -ChildPath "/_diag"
+                # Join-Path -Path $homeDir -ChildPath "actions-runner/_diag/pages"
+                # Join-Path -Path $homeDir -ChildPath "actions-runner/_diag"
             $possiblePaths = @(
                 Join-Path -Path $homeDir -ChildPath "actions-runner/cached/_diag/pages"
-                Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages"
-                Join-Path -Path $homeDir -ChildPath "/_diag/pages"
-                Join-Path -Path $homeDir -ChildPath "/_diag"
-                Join-Path -Path $homeDir -ChildPath "actions-runner/_diag/pages"
-                Join-Path -Path $homeDir -ChildPath "actions-runner/_diag"
+                Join-Path -Path $homeDir -ChildPath "runners/*/_diag/pages" 
+                Join-Path -Path $homeDir -ChildPath "actions-runner/extracted/_diag/pages"
+
             )
             
             $logsFolderPath = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
