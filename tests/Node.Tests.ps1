@@ -29,7 +29,7 @@ Describe "Node.js" {
             Write-Host "Logs folder path: $logsFolderPath"
     
             if (-not [string]::IsNullOrEmpty($logsFolderPath) -and (Test-Path $logsFolderPath)) {
-                if ($logsFolderPath -eq "actions-runner/cached/_diag/pages") {
+                if ($logsFolderPath -eq "actions-runner/cached/_diag/pages" -or $logsFolderPath -like "actions-runner/*/_diag/pages") {
                     $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
                         if (-not $_.PSIsContainer) { # Ensure it's not a directory
                             $logContent = Get-Content $_.Fullname -Raw
