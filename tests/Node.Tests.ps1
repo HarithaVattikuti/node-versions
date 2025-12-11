@@ -28,6 +28,24 @@ Describe "Node.js" {
             
             Write-Host "Logs folder path: $logsFolderPath"
     
+            # Get the process information for Runner.Listener
+            $process = Get-Process -Name "Runner.Listener" -ErrorAction SilentlyContinue
+
+            if ($process) {
+                # Get the process's working directory
+                $workingDirectory = Split-Path -Path $process.Path -Parent
+
+                # Check if the _diag folder exists in the working directory
+                $diagFolderPath = Join-Path -Path $workingDirectory -ChildPath "_diag"
+                if (Test-Path -Path $diagFolderPath) {
+                    Write-Host "_diag folder found at: $diagFolderPath"
+                } else {
+                    Write-Host "_diag folder not found in the Runner.Listener working directory."
+                }
+            } else {
+                Write-Host "Runner.Listener process is not running."
+            }
+            
             if (-not [string]::IsNullOrEmpty($logsFolderPath) -and (Test-Path $logsFolderPath)) {
                 if ($logsFolderPath -eq "actions-runner/cached/_diag/pages" -or $logsFolderPath -like "actions-runner/*/_diag/pages") {
                     $useNodeLogFile = Get-ChildItem -Path $logsFolderPath -File | Where-Object {
