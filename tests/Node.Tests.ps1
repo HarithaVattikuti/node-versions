@@ -18,7 +18,8 @@ Describe "Node.js" {
             $logsFolderPath = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
             $resolvedPath = Resolve-Path -Path $logsFolderPath -ErrorAction SilentlyContinue
 
-            if ($resolvedPath -and -not [string]::IsNullOrEmpty($resolvedPath.Path) -and (Test-Path $resolvedPath.Path)) {                
+            if ($resolvedPath -and -not [string]::IsNullOrEmpty($resolvedPath.Path) -and (Test-Path $resolvedPath.Path)) {   
+                Write-Host "Folder found at: $resolvedPath"
                 $useNodeLogFile = Get-ChildItem -Path $resolvedPath | Where-Object {
                             $logContent = Get-Content $_.Fullname -Raw
                             return $logContent -match "setup-node@v"                     
