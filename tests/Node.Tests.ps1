@@ -26,14 +26,19 @@ Describe "Node.js" {
             Write-Host "`$runnerRoot: $runnerRoot"
             # Recursively find all _diag/pages folders under $homeDir(not homedir-replace with runnerroot)
             # $possiblePaths = Get-ChildItem -Path $runnerRoot -Directory -Recurse -ErrorAction SilentlyContinue |
-            $possiblePaths = Get-ChildItem -Path $runnerRoot -Directory -Recurse -Depth 4 -ErrorAction SilentlyContinue |
+            $possiblePaths = Get-ChildItem -Path $runnerRoot -Directory -Recurse -Depth 2 -ErrorAction SilentlyContinue |
                 Where-Object { $_.FullName -like "*_diag\pages" -or $_.FullName -like "*_diag/pages" }
             Write-Host "`$possiblePaths:"
             $possiblePaths | ForEach-Object { Write-Host $_.FullName }
         
             # $logsFolderPath = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
-            $logsFolderPath = $possiblePaths | Select-Object -ExpandProperty FullName -First 1
-            $resolvedPath = Resolve-Path -Path $logsFolderPath -ErrorAction SilentlyContinue
+            $logsFolderPath = $possiblePaths | Select-Object -First 1
+            if ($logsFolderPath) {
+                $resolvedPath = Resolve-Path -Path $logsFolderPath -ErrorAction SilentlyContinue
+                Write-Host "`$resolvedPath: $resolvedPath"
+            }
+            # $resolvedPath = Resolve-Path -Path $logsFolderPath -ErrorAction SilentlyContinue
+            Write-Host "`$logsFolderPath: $logsFolderPath"
 
             if ($resolvedPath -and -not [string]::IsNullOrEmpty($resolvedPath.Path) -and (Test-Path $resolvedPath.Path)) {                
                 $useNodeLogFile = Get-ChildItem -Path $resolvedPath | Where-Object {
