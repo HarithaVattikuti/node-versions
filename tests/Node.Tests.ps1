@@ -16,6 +16,7 @@ Describe "Node.js" {
             )
             
             $logsFolderPath = $possiblePaths | Where-Object { Test-Path $_ } | Select-Object -First 1
+            Write-Host "logsFolderPath found at: $logsFolderPath"
             $resolvedPath = Resolve-Path -Path $logsFolderPath -ErrorAction SilentlyContinue
             Write-Host "Folder found at: $resolvedPath"
 
